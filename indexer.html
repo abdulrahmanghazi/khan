@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head><title>Check Location</title></head>
+<body>
+  <h2>Click below to share your location</h2>
+  <button onclick="getLocation()">Send Location</button>
+
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(sendLocation);
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    function sendLocation(position) {
+      var lat = position.coords.latitude;
+      var lon = position.coords.longitude;
+
+      // Send to your server or webhook
+      fetch("https://maker.ifttt.com/trigger/location_captured/with/key/YOUR_KEY", {
+        method: "POST",
+        body: JSON.stringify({
+          value1: lat,
+          value2: lon
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      alert("Location sent!");
+    }
+  </script>
+</body>
+</html>
